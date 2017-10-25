@@ -4,16 +4,30 @@ import java.util.Map;
 public class Main {
 
     public static void main(String[] args) {
+        String humanText = "test tecnico meli";
+        String inMorse1 = encode2Morse(humanText);
+        String inBits1 = encodeMorse2Bits(inMorse1,1,2,1,1,2);
+        String inBits2 = encodeMorse2Bits(inMorse1,5,8,1,1,5);
+        String inMorse2 = decodeBits2Morse(inBits1);
+        String inMorse3 = decodeBits2Morse(inBits2);
+        String toHuman1 = translate2Human(inMorse1);
+        String toHuman2 = translate2Human(inMorse2);
+        String toHuman3 = translate2Human(inMorse3);
+        System.out.println(humanText);
+        System.out.println(toHuman1);
+        System.out.println(toHuman2);
+        System.out.println(toHuman3);
+
         //searching the first and last '1'
         //String bitsHolaMeli = "110110110110011101110111001101110110110011011100011101110011001101110110110011011";
         //Test tecnico mercado libre
-        //String test1 = "10101101";
+        //String test1 = "11110011110011110011110001111100111110011111000111100111110011110011110001111001111100000111110011111000111100011110011111001111001111000111100111100";
         //.... --- .-.. .-  -- . .-.. ..
         //System.out.println("---decodeBits2Morse---");
         //System.out.println(decodeBits2Morse(bitsHolaMeli));
         //System.out.println();
         //System.out.println("---translate2Human---");
-        //System.out.println(translate2Human(decodeBits2Morse(bitsHolaMeli)));
+        //System.out.println(translate2Human(decodeBits2Morse(test1)));
         //System.out.println();
         //String morse = ". ... - ---     . ...     ..- -. .-     .--. .-. ..- . -... .-     -.. .     --.- ..- .     ..-. ..- -. -.-. .. --- -. .-     -- ..     .--. .- .-. ... . .-.";
         //esto es una prueba de que funciona mi parser
@@ -38,6 +52,9 @@ public class Main {
         //System.out.println(translate2Human(m));
         //String b = "1100100101010011000110010011010110100110100101001101011010001101101100011011001001011010011010110100010110011010100110110110001011010100101001101010100101101001";
         //System.out.println(translate2Human(decodeBits2Morse(b)));
+
+        //String morse = ".... --- .-.. .-  -- . .-.. ..";
+        //System.out.println(encodeMorse2Bits(morse, 4, 5, 2, 1, 3));
     }
 
     public static String decodeBits2Morse(String bits) {
@@ -151,6 +168,54 @@ public class Main {
         return response.toString();
     }
 
+    public static String encodeMorse2Bits(String morse,
+                                          int minOne/*la cantidad de unos para el punto (.)*/,
+                                          int maxOne/*la cantidad de unos para el espacio(-)*/,
+                                          int minZeros/*la cantidad de zeros para separar caracteres de la misma letra*/,
+                                          int mediumZeros/*la cantidad de zeros para separar letras*/,
+                                          int maxZeros/*la cantidad de zeros para separar palabras*/) {
+        StringBuilder response = new StringBuilder();
+        for (int i = 0; i < morse.length(); i++) {
+            if (morse.charAt(i) == '.') {
+                //colocando los 1
+                for (int j = 0; j < minOne; j++) {
+                    response.append("1");
+                }
+                //colocando el espacio para separar caracteres
+                for (int j = 0; j < minZeros; j++) {
+                    response.append("0");
+                }
+            }
+            if (morse.charAt(i) == '-') {
+                //colocando los 1
+                for (int j = 0; j < maxOne; j++) {
+                    response.append("1");
+                }
+                //colocando el espacio para separar caracteres
+                for (int j = 0; j < minZeros; j++) {
+                    response.append("0");
+                }
+            }
+            if (morse.charAt(i) == ' ') {
+                //buscar la cantidad de espacios para saber si son 1 o 2 espacios
+                if (morse.charAt(i + 1) == ' ') {
+                    //es separacion de palabtas
+                    i++;
+                    for (int j = 0; j < maxZeros; j++) {
+                        response.append("0");
+                    }
+                } else {
+                    //separacion de letras
+                    for (int j = 0; j < mediumZeros; j++) {
+                        response.append("0");
+                    }
+                }
+            }
+        }
+        return response.toString();
+    }
+
+
     public static Map<Character, String> loadAlphaMap() {
         Map<Character, String> alpha = new HashMap<Character, String>();
         alpha.put('A', ".-");
@@ -194,44 +259,44 @@ public class Main {
     }
 
     public static Map<String, Character> loadMorseMap() {
-        Map<String, Character> alpha = new HashMap<String, Character>();
-        alpha.put(".-", 'A');
-        alpha.put("-...", 'B');
-        alpha.put("-.-.", 'C');
-        alpha.put("-..", 'D');
-        alpha.put(".", 'E');
-        alpha.put("..-.", 'F');
-        alpha.put("--.", 'G');
-        alpha.put("....", 'H');
-        alpha.put("..", 'I');
-        alpha.put(".---", 'J');
-        alpha.put("-.-", 'K');
-        alpha.put(".-..", 'L');
-        alpha.put("--", 'M');
-        alpha.put("-.", 'N');
-        alpha.put("---", 'O');
-        alpha.put(".--.", 'P');
-        alpha.put("--.-", 'Q');
-        alpha.put(".-.", 'R');
-        alpha.put("...", 'S');
-        alpha.put("-", 'T');
-        alpha.put("..-", 'U');
-        alpha.put("...-", 'V');
-        alpha.put(".--", 'W');
-        alpha.put("-..-", 'X');
-        alpha.put("-.--", 'Y');
-        alpha.put("--..", 'Z');
-        alpha.put("-----", '0');
-        alpha.put(".----", '1');
-        alpha.put("..---", '2');
-        alpha.put("...--", '3');
-        alpha.put("....-", '4');
-        alpha.put(".....", '5');
-        alpha.put("-....", '6');
-        alpha.put("--...", '7');
-        alpha.put("---..", '8');
-        alpha.put("----.", '9');
+        Map<String, Character> morse = new HashMap<String, Character>();
+        morse.put(".-", 'A');
+        morse.put("-...", 'B');
+        morse.put("-.-.", 'C');
+        morse.put("-..", 'D');
+        morse.put(".", 'E');
+        morse.put("..-.", 'F');
+        morse.put("--.", 'G');
+        morse.put("....", 'H');
+        morse.put("..", 'I');
+        morse.put(".---", 'J');
+        morse.put("-.-", 'K');
+        morse.put(".-..", 'L');
+        morse.put("--", 'M');
+        morse.put("-.", 'N');
+        morse.put("---", 'O');
+        morse.put(".--.", 'P');
+        morse.put("--.-", 'Q');
+        morse.put(".-.", 'R');
+        morse.put("...", 'S');
+        morse.put("-", 'T');
+        morse.put("..-", 'U');
+        morse.put("...-", 'V');
+        morse.put(".--", 'W');
+        morse.put("-..-", 'X');
+        morse.put("-.--", 'Y');
+        morse.put("--..", 'Z');
+        morse.put("-----", '0');
+        morse.put(".----", '1');
+        morse.put("..---", '2');
+        morse.put("...--", '3');
+        morse.put("....-", '4');
+        morse.put(".....", '5');
+        morse.put("-....", '6');
+        morse.put("--...", '7');
+        morse.put("---..", '8');
+        morse.put("----.", '9');
 
-        return alpha;
+        return morse;
     }
 }
