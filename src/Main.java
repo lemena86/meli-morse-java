@@ -2,12 +2,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
-
+    //TODO tratamiento excepciones
     public static void main(String[] args) {
-        String humanText = "test tecnico meli";
+        //String humanText = "test tecnico meli";
+        String humanText = "Lorem ipsum dolor sit amet consectetur adipiscing elit";
         String inMorse1 = encode2Morse(humanText);
-        String inBits1 = encodeMorse2Bits(inMorse1,1,2,1,1,2);
-        String inBits2 = encodeMorse2Bits(inMorse1,5,8,1,1,5);
+        System.out.println(inMorse1);
+        String inBits1 = encodeMorse2Bits(inMorse1, 1, 2, 1, 1, 2);
+        String inBits2 = encodeMorse2Bits(inMorse1, 5, 8, 1, 1, 5);
         String inMorse2 = decodeBits2Morse(inBits1);
         String inMorse3 = decodeBits2Morse(inBits2);
         String toHuman1 = translate2Human(inMorse1);
@@ -168,17 +170,26 @@ public class Main {
         return response.toString();
     }
 
+    /**
+     * @param morse       cadena en morse
+     * @param minOnes     la cantidad de unos para el punto (.)
+     * @param maxOnes     la cantidad de unos para el espacio(-)
+     * @param minZeros    la cantidad de zeros para separar caracteres de la misma letra
+     * @param mediumZeros la cantidad de zeros para separar letras
+     * @param maxZeros    la cantidad de zeros para separar palabras
+     * @return cadena con el text en bits
+     */
     public static String encodeMorse2Bits(String morse,
-                                          int minOne/*la cantidad de unos para el punto (.)*/,
-                                          int maxOne/*la cantidad de unos para el espacio(-)*/,
-                                          int minZeros/*la cantidad de zeros para separar caracteres de la misma letra*/,
-                                          int mediumZeros/*la cantidad de zeros para separar letras*/,
-                                          int maxZeros/*la cantidad de zeros para separar palabras*/) {
+                                          int minOnes,
+                                          int maxOnes,
+                                          int minZeros,
+                                          int mediumZeros,
+                                          int maxZeros) {
         StringBuilder response = new StringBuilder();
         for (int i = 0; i < morse.length(); i++) {
             if (morse.charAt(i) == '.') {
                 //colocando los 1
-                for (int j = 0; j < minOne; j++) {
+                for (int j = 0; j < minOnes; j++) {
                     response.append("1");
                 }
                 //colocando el espacio para separar caracteres
@@ -188,7 +199,7 @@ public class Main {
             }
             if (morse.charAt(i) == '-') {
                 //colocando los 1
-                for (int j = 0; j < maxOne; j++) {
+                for (int j = 0; j < maxOnes; j++) {
                     response.append("1");
                 }
                 //colocando el espacio para separar caracteres
