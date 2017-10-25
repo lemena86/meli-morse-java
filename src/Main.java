@@ -5,34 +5,43 @@ public class Main {
 
     public static void main(String[] args) {
         //searching the first and last '1'
-        String bitsHolaMeli = "110110110110011101110111001101110110110011011100011101110011001101110110110011011";
+        //String bitsHolaMeli = "110110110110011101110111001101110110110011011100011101110011001101110110110011011";
+        //Test tecnico mercado libre
+        //String test1 = "10101101";
         //.... --- .-.. .-  -- . .-.. ..
-        System.out.println("---decodeBits2Morse---");
-        System.out.println(decodeBits2Morse(bitsHolaMeli));
-        System.out.println();
-        System.out.println("---translate2Human---");
-        System.out.println(translate2Human(decodeBits2Morse(bitsHolaMeli)));
-        System.out.println();
+        //System.out.println("---decodeBits2Morse---");
+        //System.out.println(decodeBits2Morse(bitsHolaMeli));
+        //System.out.println();
+        //System.out.println("---translate2Human---");
+        //System.out.println(translate2Human(decodeBits2Morse(bitsHolaMeli)));
+        //System.out.println();
         //String morse = ". ... - ---     . ...     ..- -. .-     .--. .-. ..- . -... .-     -.. .     --.- ..- .     ..-. ..- -. -.-. .. --- -. .-     -- ..     .--. .- .-. ... . .-.";
         //esto es una prueba de que funciona mi parser
-        //System.out.println(decodeMorse(morse));
+        //System.out.println(translate2Human(morse));
         //String phrase = "segunda prueba de que el parser esta ok";
         //... . --. ..- -. -.. .-  .--. .-. ..- . -... .-  -.. .  --.- ..- .  . .-..  .--. .- .-. ... . .-.  . ... - .-  --- -.-
         //String morse1 = "... . --. ..- -. -.. .-  .--. .-. ..- . -... .-  -.. .  --.- ..- .  . .-..  .--. .- .-. ... . .-.  . ... - .-  --- -.-";
         //String morse2 = "... . --. ..- -. -.. .-   .--. .-. ..- . -... .-   -.. .   --.- ..- .   . .-..   .--. .- .-. ... . .-.   . ... - .-   --- -.-";
-        //System.out.println(encodeMorse(phrase));
+        //System.out.println(encode2Morse(phrase));
+        //System.out.println(translate2Human(encode2Morse(phrase)));
 
         //String morseHolaMeli = ".... --- .-.. .-  -- . .-.. ..";
         //System.out.println(translate2Human(morseHolaMeli));
-        System.out.println("---encode2Morse---");
+        //System.out.println("---encode2Morse---");
         //String holaMeli = "HOLA MELI";
-        System.out.println(encode2Morse(translate2Human(decodeBits2Morse(bitsHolaMeli))));
+        //System.out.println(encode2Morse(translate2Human(decodeBits2Morse(bitsHolaMeli))));
+
+
+        //String h = "Test tecnico mercado libre";
+        //String m = encode2Morse(h);
+        //System.out.println(m);
+        //System.out.println(translate2Human(m));
+        //String b = "1100100101010011000110010011010110100110100101001101011010001101101100011011001001011010011010110100010110011010100110110110001011010100101001101010100101101001";
+        //System.out.println(translate2Human(decodeBits2Morse(b)));
     }
 
     public static String decodeBits2Morse(String bits) {
-        int start = 0, end = bits.length();
-        while (start < end && bits.charAt(start) == '0') start++;
-        end = bits.lastIndexOf('1') + 1;
+        int start = bits.indexOf('1'), end = bits.lastIndexOf('1') + 1;
 
         //search min and max ocurrence of 0 and 1
         int minZero = Integer.MAX_VALUE, maxZero = 0, minOne = Integer.MAX_VALUE, maxOne = 0, count, j;
@@ -56,8 +65,8 @@ public class Main {
                     count++;
                     j++;
                 }
-                if (count != 1 && count < minZero) minZero = count;
-                if (count != 1 && count > maxZero) maxZero = count;
+                if (count < minZero) minZero = count;
+                if (count > maxZero) maxZero = count;
             }
             i = j;
         }
@@ -83,8 +92,9 @@ public class Main {
                     count++;
                     j++;
                 }
-                if (count == minZero) response.append(" ");
-                else if (count == maxZero) response.append("  ");
+                if (count == minZero) response.append("");
+                else if (count == maxZero) response.append("  ");//separacion letras
+                else response.append(" ");//separacion palabras
             }
             i = j;
         }
